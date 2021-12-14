@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <title>Flask Todo App</title>
+  </head>
+  <body>
+    <div class="todoList">
+      <h3 class="title">Todo List</h3>
+      <form action="/add" method="post">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            placeholder="Enter Todo..."
+          /><br />
+          <button type="submit" class="btn btn-danger">Add</button>
+        </div>
+      </form>
+      {% if todo_list == [] %}
+      <div class="alert alert-warning" role="alert">No Todo available</div>
+      {% else %}
+      <div class="row">
+        {% for todo in todo_list %}
+        <div class="col-3 mt-3">
+          <div class="todo-card">
+            <img
+              class="card-image"
+              src="https://toastlog.com/img/logos/logo.svg"
+            />
+            <div>
+              <div class="d-flex justify-content-between">
+                {% if todo.complete == False %}
+                <p class="font-weight-bold">{{ todo.title }}</p>
+                {% else %}
+                <p class="font-weight-bold text-line-through">
+                  {{ todo.title }}
+                </p>
+                {% endif %}
+                <a href="/delete/{{ todo.id }}">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 8L8 16" />
+                    <path d="M16 16L8 8" />
+                  </svg>
+                </a>
+              </div>
+              <a href="/complete/{{ todo.id }}">
+                  <p class="m-0">Hoàn thành</p>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- <tr>
+          <th scope="row">{{ todo.id }}</th>
+          <td>{{ todo.title }}</td>
+          {% if todo.complete == False %}
+          <td><span class="badge badge-danger">Not Complete</span></td>
+          {% else %}
+          <td><span class="badge badge-success">Completed</span></td>
+          {% endif %}
+          <td>
+            <a href="/complete/{{ todo.id }}" class="btn btn-info">Update</a>
+          </td>
+          <td>
+            <a href="/delete/{{ todo.id }}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr> -->
+        {% endfor %}
+      </div>
+      <!-- <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Status</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+
+           
+            </tbody>
+        </table> -->
+      {% endif %}
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
