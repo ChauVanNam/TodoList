@@ -32,12 +32,19 @@
         <div class="form-group">
           <input
             type="text"
-            class="form-control"
+            class="form-control mb-2"
             id="title"
             name="title"
-            placeholder="Enter Todo..."
+            placeholder="Nhập tên công việc"
+          />
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            placeholder="Nhập mô tả"
           /><br />
-          <button type="submit" class="btn btn-danger">Add</button>
+          <button type="submit" class="btn btn-danger">Thêm</button>
         </div>
       </form>
       {% if todo_list == [] %}
@@ -46,7 +53,7 @@
       <div class="row">
         {% for todo in todo_list %}
         <div class="col-3 mt-3">
-          <div class="todo-card">
+          <div class="todo-card d-flex justify-content-between flex-column">
             <img
               class="card-image"
               src="https://toastlog.com/img/logos/logo.svg"
@@ -54,7 +61,7 @@
             <div>
               <div class="d-flex justify-content-between">
                 {% if todo.complete == False %}
-                <p class="font-weight-bold">{{ todo.title }}</p>
+                <p class="font-weight-bold m-0">{{ todo.title }}</p>
                 {% else %}
                 <p class="font-weight-bold text-line-through">
                   {{ todo.title }}
@@ -67,44 +74,34 @@
                   </svg>
                 </a>
               </div>
-              <a href="/complete/{{ todo.id }}">
-                  <p class="m-0">Hoàn thành</p>
-              </a>
+              {% if todo.complete == False %}
+              <p class="description">{{ todo.description }}</p>
+              {% else %}
+              <p class="description text-line-through">
+                {{ todo.description }}
+              </p>
+              {% endif %}
             </div>
+            {% if todo.complete == False %}
+            <a href="/complete/{{ todo.id }}">
+              <img
+                width="20"
+                src="{{url_for('static',filename = 'img/check-solid.svg')}}"
+              />
+            </a>
+            {% else %}
+            <a href="/complete/{{ todo.id }}">
+              <img
+                width="20"
+                src="{{url_for('static',filename = 'img/circle-regular.svg')}}"
+              />
+            </a>
+
+            {% endif %}
           </div>
         </div>
-        <!-- <tr>
-          <th scope="row">{{ todo.id }}</th>
-          <td>{{ todo.title }}</td>
-          {% if todo.complete == False %}
-          <td><span class="badge badge-danger">Not Complete</span></td>
-          {% else %}
-          <td><span class="badge badge-success">Completed</span></td>
-          {% endif %}
-          <td>
-            <a href="/complete/{{ todo.id }}" class="btn btn-info">Update</a>
-          </td>
-          <td>
-            <a href="/delete/{{ todo.id }}" class="btn btn-danger">Delete</a>
-          </td>
-        </tr> -->
         {% endfor %}
       </div>
-      <!-- <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Title</th>
-                <th scope="col">Status</th>
-                <th scope="col">Update</th>
-                <th scope="col">Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-
-           
-            </tbody>
-        </table> -->
       {% endif %}
     </div>
 

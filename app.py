@@ -1,20 +1,22 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
-DATABASE = os.path.join(PROJECT_ROOT, 'todo.db')
+DATABASE = os.path.join(PROJECT_ROOT, 'todolist.db')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////" + DATABASE
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     complete = db.Column(db.Boolean)
-
+    description = db.Column(db.String(512))
 @app.route("/")
 def index():
     todo_list = Todo.query.all()
@@ -24,11 +26,11 @@ def index():
 @app.route("/add", methods=["POST"])
 def add():
     title = request.form.get("title")
-    new_todo = Todo(title=title, complete=False)
+    description = request.form.get("description")
+    new_todo = Todo(title=title, complete=False, description = description)
     db.session.add(new_todo)
     db.session.commit()
     return redirect(url_for("index"))
-
 
 @app.route("/complete/<string:todo_id>")
 def complete(todo_id):
